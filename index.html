@@ -201,6 +201,7 @@
   .pill.place { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 40%, var(--line)); background: color-mix(in srgb, var(--amber) 10%, transparent); }
   .trip-people { margin-top: 16px; }
   .trip-people-label { font-size: 0.78rem; color: var(--stone); margin-bottom: 8px; }
+  .trip-people-summary { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 10px; }
   .people-list { display: flex; flex-wrap: wrap; gap: 8px 10px; list-style: none; padding: 0; margin: 0; }
   .people-list li { font-size: 0.92rem; }
   .people-list li .year { color: var(--stone); font-size: 0.8rem; }
@@ -243,6 +244,9 @@
   }
   .timeline-point:hover, .timeline-point:focus-visible { transform: scale(1.25); outline: none; }
   .timeline-point[aria-expanded="true"] { background: var(--pine); }
+  .timeline-point.upcoming { border-style: dashed; border-color: var(--amber); }
+  .timeline-point.upcoming[aria-expanded="true"] { background: var(--amber); }
+  .timeline-point-sub { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); font-size: 0.68rem; color: var(--amber); white-space: nowrap; font-weight: 600; }
   .timeline-point-date {
     position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
     font-size: 0.76rem; color: var(--ink-soft); white-space: nowrap;
@@ -383,7 +387,7 @@
 
   footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); text-align: center; color: var(--stone); font-size: 0.82rem; }
   .sponsor-credit { margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 0.86rem; color: var(--stone); }
-  .sponsor-credit img { height: 30px; width: auto; display: block; vertical-align: middle; opacity: 0.9; }
+  .sponsor-credit img { height: 46px; width: auto; display: block; vertical-align: middle; opacity: 0.9; }
   .sponsor-credit a { display: inline-flex; align-items: center; }
   .sponsor-credit a:hover img { opacity: 1; }
 </style>
@@ -690,14 +694,14 @@
       elevationM: 845,
       durationMin: 241,
       participants: [
-        { name: "Riccardo Ferrario", year: 2000, birthdate: "2000-01-23" },
-        { name: "Matteo Cattaneo", year: 2000, birthdate: "2000-10-10" },
-        { name: "Francesco Leccese", year: 2006, birthdate: "2006-02-09" },
-        { name: "Giovanni Castellazzi", year: 1988, birthdate: "1988-06-02" },
-        { name: "Alice Redaelli", year: 2003, birthdate: "2003-05-20" },
-        { name: "Aurora Crippa", year: 2006, birthdate: "2006-03-19" },
-        { name: "Daniele Ciocca", year: 1998, birthdate: "1998-12-01" },
-        { name: "Gianluigi Lenzi", year: 1994, birthdate: "1994-09-29" }
+        { name: "Riccardo F.", year: 2000, birthdate: "2000-01-23", gender: "M" },
+        { name: "Matteo C.", year: 2000, birthdate: "2000-10-10", gender: "M" },
+        { name: "Francesco L.", year: 2006, birthdate: "2006-02-09", gender: "M" },
+        { name: "Giovanni C.", year: 1988, birthdate: "1988-06-02", gender: "M" },
+        { name: "Alice R.", year: 2003, birthdate: "2003-05-20", gender: "F" },
+        { name: "Aurora C.", year: 2006, birthdate: "2006-03-19", gender: "F" },
+        { name: "Daniele C.", year: 1998, birthdate: "1998-12-01", gender: "M" },
+        { name: "Gianluigi L.", year: 1994, birthdate: "1994-09-29", gender: "M" }
       ],
       mediaNote: "Foto e video di questa gita non ancora caricati — aggiungeteli qui appena li avete.",
       albumUrl: "https://photos.app.goo.gl/MeDsRAufX2KkJH2U9"
@@ -724,13 +728,13 @@
       avgSpeedKmh: 3.4,
       maxSpeedKmh: 10.6,
       participants: [
-        { name: "Giovanni Castellazzi", year: 1988, birthdate: "1988-06-02" },
-        { name: "Alice Redaelli", year: 2003, birthdate: "2003-05-20" },
-        { name: "Aurora Crippa", year: 2006, birthdate: "2006-03-19" },
-        { name: "Matteo Cattaneo", year: 2000, birthdate: "2000-10-10" },
-        { name: "Daniele Ciocca", year: 1998, birthdate: "1998-12-01" },
-        { name: "Riccardo Ferrario", year: 2000, birthdate: "2000-01-23" },
-        { name: "Aurora Lumina", year: 2001, birthdate: "2001-10-30" }
+        { name: "Giovanni C.", year: 1988, birthdate: "1988-06-02", gender: "M" },
+        { name: "Alice R.", year: 2003, birthdate: "2003-05-20", gender: "F" },
+        { name: "Aurora C.", year: 2006, birthdate: "2006-03-19", gender: "F" },
+        { name: "Matteo C.", year: 2000, birthdate: "2000-10-10", gender: "M" },
+        { name: "Daniele C.", year: 1998, birthdate: "1998-12-01", gender: "M" },
+        { name: "Riccardo F.", year: 2000, birthdate: "2000-01-23", gender: "M" },
+        { name: "Aurora L.", year: 2001, birthdate: "2001-10-30", gender: "F" }
       ],
       mediaNote: "Foto e video di questa gita non ancora caricati — aggiungeteli qui appena li avete.",
       albumUrl: "https://photos.app.goo.gl/6DQW6K86griKrDZC8"
@@ -740,6 +744,7 @@
   // Prossima gita in programma — null finché non è ancora fissata una data.
   var nextTrip = {
     dateLabel: "Mercoledì 25 novembre 2026",
+    shortDate: "25 nov 2026",
     iso: "2026-11-25T00:00:00",
     name: "Meta da definire"
   };
@@ -760,6 +765,9 @@
     var sum = participants.reduce(function (a, p) { return a + age(p); }, 0);
     return sum / participants.length;
   }
+  function countGender(participants, g) { return participants.filter(function (p) { return p.gender === g; }).length; }
+  function labelM(n) { return n + (n === 1 ? " maschio" : " maschi"); }
+  function labelF(n) { return n + (n === 1 ? " femmina" : " femmine"); }
   function fmt1(n) { return n.toFixed(1).replace(".", ","); }
   function fmtKm(n) { return n.toLocaleString("it-IT", { minimumFractionDigits: n % 1 ? 1 : 0, maximumFractionDigits: 1 }) + " km"; }
   function fmtElev(n) { return Math.round(n) + " m D+"; }
@@ -859,11 +867,14 @@
 
   // ---- age cards ----
   var ageCards = document.getElementById("age-cards");
-  var tripAvg = trips.length ? avgAge(trips[trips.length - 1].participants) : 0;
+  var uniquePeople = uniqueNames.map(function (n) { return allParticipantNames[n]; });
+  var nM = countGender(uniquePeople, "M"), nF = countGender(uniquePeople, "F");
+  var pctM = uniquePeople.length ? Math.round(nM / uniquePeople.length * 100) : 0;
+  var pctF = uniquePeople.length ? 100 - pctM : 0;
   var ageData = [
-    [fmt1(overallAvgAge) + " anni", "Età media del gruppo"],
-    [fmt1(tripAvg) + " anni", "Età media ultima gita"],
-    [Math.min.apply(null, uniqueNames.map(function (n) { return age(allParticipantNames[n]); })) + "–" + Math.max.apply(null, uniqueNames.map(function (n) { return age(allParticipantNames[n]); })), "Range età"]
+    [fmt1(overallAvgAge) + " anni", "Età media di chi ha partecipato (" + uniquePeople.length + " persone)"],
+    [Math.min.apply(null, uniqueNames.map(function (n) { return age(allParticipantNames[n]); })) + "–" + Math.max.apply(null, uniqueNames.map(function (n) { return age(allParticipantNames[n]); })), "Range età"],
+    [pctM + "% / " + pctF + "%", "Maschi / femmine (" + nM + " M · " + nF + " F)"]
   ];
   ageData.forEach(function (d) {
     var div = document.createElement("div");
@@ -960,7 +971,7 @@
       var badges = "";
       if (firstTripDateByName[p.name] === t.date) badges += '<span class="badge gold">prima gita</span>';
       if (totalTrips > 1 && tripCountByName[p.name] === totalTrips) badges += '<span class="badge">sempre presente</span>';
-      return '<li>' + p.name + ' <span class="year">· ' + p.year + '</span>' + badges + '</li>';
+      return '<li>' + p.name + badges + '</li>';
     }).join("");
     var mediaHtml;
     if (t.albumUrl) {
@@ -985,42 +996,63 @@
       '<div class="trip-date" style="margin-bottom:14px;">' + t.dateLabel + '</div>' +
       '<div class="trip-meta">' + pillsHtml + '</div>' +
       '<div class="trip-people" style="margin-top:18px;"><div class="trip-people-label">Chi c\'era (' + t.participants.length + ')</div>' +
+      '<div class="trip-people-summary">Età media ' + fmt1(avgAge(t.participants)) + ' anni · ' + labelM(countGender(t.participants, "M")) + ' · ' + labelF(countGender(t.participants, "F")) + '</div>' +
       '<ul class="people-list">' + peopleHtml + '</ul></div>' +
       mediaHtml;
     detail.classList.add("open");
   }
 
-  sortedTrips.forEach(function (t, i) {
-    var pct = sortedTrips.length === 1 ? 50 : (i / (sortedTrips.length - 1)) * 100;
+  function renderUpcoming(n) {
+    detail.innerHTML =
+      '<h4>' + n.name + '</h4>' +
+      '<div class="trip-date" style="margin-bottom:14px;">' + n.dateLabel + (n.timeLabel ? ' · ore ' + n.timeLabel : '') + '</div>' +
+      '<div class="trip-meta"><span class="pill place">' + ICON_FLAG + 'In programma</span><span class="pill">Destinazione da decidere</span><span class="pill">In progress</span></div>' +
+      '<p style="margin:18px 0 0; font-size:0.9rem; color:var(--ink-soft);">Appena decisa la meta compariranno qui percorso, dislivello e previsioni meteo.</p>';
+    detail.classList.add("open");
+  }
+
+  var timelineItems = sortedTrips.map(function (t) { return { trip: t, upcoming: false }; });
+  if (nextTrip) timelineItems.push({ trip: nextTrip, upcoming: true });
+  var timelineBtns = [];
+
+  timelineItems.forEach(function (item, i) {
+    var t = item.trip;
+    var pct = timelineItems.length === 1 ? 50 : (i / (timelineItems.length - 1)) * 100;
     var wrap = document.createElement("div");
     wrap.className = "timeline-point-wrap";
     wrap.style.left = pct + "%";
     var btn = document.createElement("button");
-    btn.className = "timeline-point";
+    btn.className = "timeline-point" + (item.upcoming ? " upcoming" : "");
     btn.setAttribute("aria-expanded", "false");
-    btn.setAttribute("aria-label", "Dettagli gita del " + t.shortDate);
+    btn.setAttribute("aria-label", (item.upcoming ? "Prossima gita del " : "Dettagli gita del ") + t.shortDate);
     var dateLabel = document.createElement("span");
     dateLabel.className = "timeline-point-date";
     dateLabel.textContent = t.shortDate;
     wrap.appendChild(dateLabel);
     wrap.appendChild(btn);
+    if (item.upcoming) {
+      var sub = document.createElement("span");
+      sub.className = "timeline-point-sub";
+      sub.textContent = "da decidere";
+      wrap.appendChild(sub);
+    }
     track.appendChild(wrap);
+    timelineBtns.push(btn);
     btn.addEventListener("click", function () {
       var isOpen = btn.getAttribute("aria-expanded") === "true";
-      document.querySelectorAll(".timeline-point").forEach(function (p) { p.setAttribute("aria-expanded", "false"); });
+      timelineBtns.forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
       if (isOpen) {
         detail.classList.remove("open");
       } else {
         btn.setAttribute("aria-expanded", "true");
-        renderDetail(t);
+        if (item.upcoming) renderUpcoming(t); else renderDetail(t);
       }
     });
   });
 
-  // apri di default l'ultima gita (la più recente)
+  // apri di default l'ultima gita già fatta (la più recente)
   if (sortedTrips.length) {
-    var lastWrap = track.querySelector(".timeline-point-wrap:last-child .timeline-point");
-    if (lastWrap) lastWrap.setAttribute("aria-expanded", "true");
+    timelineBtns[sortedTrips.length - 1].setAttribute("aria-expanded", "true");
     renderDetail(sortedTrips[sortedTrips.length - 1]);
   }
 
