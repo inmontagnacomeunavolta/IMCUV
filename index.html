@@ -324,6 +324,8 @@
   .next-banner .countdown { font-size: 0.85rem; color: var(--amber); font-weight: 600; margin-top: 6px; }
   .next-banner .next-trip-name { font-family: 'Fraunces', serif; font-size: 1.4rem; margin-top: 16px; }
   .next-banner .next-trip-region { font-size: 0.85rem; color: var(--ink-soft); margin-top: 3px; }
+  .next-banner .next-trip-desc { font-size: 0.92rem; color: var(--ink-soft); max-width: 54ch; margin: 16px auto 0; }
+  .next-banner .next-trip-note { font-size: 0.85rem; color: var(--amber); font-weight: 600; margin-top: 8px; }
   .next-banner .next-trip-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
 
   /* badges */
@@ -745,8 +747,22 @@
   var nextTrip = {
     dateLabel: "Mercoledì 25 novembre 2026",
     shortDate: "25 nov 2026",
-    iso: "2026-11-25T00:00:00",
-    name: "Meta da definire"
+    timeLabel: "7:00",
+    returnLabel: "16:00",
+    iso: "2026-11-25T07:00:00",
+    name: "Rifugio Azzoni e vetta del Resegone",
+    region: "Prealpi Orobie · gruppo del Resegone",
+    province: "Lecco",
+    regionName: "Lombardia",
+    startPoint: "Morterone (il comune più piccolo d'Italia)",
+    arrivalPoint: "Resegone 1.875 m",
+    distanceKm: 8.5,
+    elevationM: 800,
+    durationLabel: "2h solo andata · circa 3h30 totali",
+    weatherUrl: "https://www.3bmeteo.com/meteo/resegone/7",
+    weatherLabel: "Meteo Resegone (3bmeteo)",
+    description: "Al Rifugio Azzoni e poi in vetta al Resegone (1.875 m), il simbolo del lecchese: la montagna che ci accompagna sull'orizzonte a nord ogni volta che siamo nei nostri paesi.",
+    note: "Meteo e neve permettendo."
   };
 
   // Data di riferimento per i calcoli di età precisi (aggiornare quando si aggiungono nuove gite)
@@ -814,23 +830,32 @@
     heroStats.appendChild(div);
   });
 
+  function nextWhen(n) {
+    return n.dateLabel + (n.timeLabel ? ' · partenza ore ' + n.timeLabel : '') + (n.returnLabel ? ' · rientro ore ' + n.returnLabel : '');
+  }
+
+  function buildNextPills(n) {
+    return (n.startPoint ? '<span class="pill place">' + ICON_FLAG + 'Da ' + n.startPoint + '</span>' : '') +
+      (n.arrivalPoint ? '<span class="pill metric">' + ICON_PEAK + 'Arrivo ' + n.arrivalPoint + (n.elevationM ? ' · ' + fmtElev(n.elevationM) : '') + '</span>' : '') +
+      (n.distanceKm ? '<span class="pill metric">' + ICON_RULER + fmtKm(n.distanceKm) + '</span>' : '') +
+      (n.durationLabel ? '<span class="pill metric">' + ICON_CLOCK + n.durationLabel + '</span>' : '') +
+      (n.difficulty ? '<span class="pill">' + n.difficulty + '</span>' : '') +
+      (n.weatherUrl ? '<a class="pill route" href="' + n.weatherUrl + '" target="_blank" rel="noopener">' + ICON_WEATHER + (n.weatherLabel || 'Previsioni meteo') + ' ↗</a>' : '');
+  }
+
   // ---- next trip banner ----
   var nextBanner = document.getElementById("next-banner-content");
   if (nextTrip) {
-    var detailPills =
-      (nextTrip.startPoint ? '<span class="pill place">' + ICON_FLAG + 'Da ' + nextTrip.startPoint + '</span>' : '') +
-      (nextTrip.arrivalPoint ? '<span class="pill metric">' + ICON_PEAK + 'Arrivo ' + nextTrip.arrivalPoint + (nextTrip.elevationM ? ' · ' + fmtElev(nextTrip.elevationM) : '') + '</span>' : '') +
-      (nextTrip.distanceKm ? '<span class="pill metric">' + ICON_RULER + fmtKm(nextTrip.distanceKm) + '</span>' : '') +
-      (nextTrip.durationLabel ? '<span class="pill metric">' + ICON_CLOCK + nextTrip.durationLabel + '</span>' : '') +
-      (nextTrip.difficulty ? '<span class="pill">' + nextTrip.difficulty + '</span>' : '') +
-      (nextTrip.weatherUrl ? '<a class="pill route" href="' + nextTrip.weatherUrl + '" target="_blank" rel="noopener">' + ICON_WEATHER + 'Previsioni meteo ↗</a>' : '');
+    var detailPills = buildNextPills(nextTrip);
     nextBanner.innerHTML =
       '<div class="label">Prossima gita</div>' +
-      '<div class="value">' + nextTrip.dateLabel + (nextTrip.timeLabel ? ' · ore ' + nextTrip.timeLabel : '') + '</div>' +
+      '<div class="value">' + nextWhen(nextTrip) + '</div>' +
       (nextTrip.iso ? '<div class="countdown" id="countdown-value"></div>' : '') +
       '<div class="next-trip-name">' + nextTrip.name + '</div>' +
       (nextTrip.region ? '<div class="next-trip-region">' + nextTrip.region + (nextTrip.province ? ' — ' + nextTrip.province + ', ' + nextTrip.regionName : '') + '</div>' : '') +
-      (detailPills ? '<div class="next-trip-pills">' + detailPills + '</div>' : '');
+      (detailPills ? '<div class="next-trip-pills">' + detailPills + '</div>' : '') +
+      (nextTrip.description ? '<p class="next-trip-desc">' + nextTrip.description + '</p>' : '') +
+      (nextTrip.note ? '<div class="next-trip-note">' + nextTrip.note + '</div>' : '');
     if (nextTrip.iso) {
       (function () {
         var target = new Date(nextTrip.iso).getTime();
@@ -1003,11 +1028,16 @@
   }
 
   function renderUpcoming(n) {
+    var detailed = !!n.startPoint;
     detail.innerHTML =
       '<h4>' + n.name + '</h4>' +
-      '<div class="trip-date" style="margin-bottom:14px;">' + n.dateLabel + (n.timeLabel ? ' · ore ' + n.timeLabel : '') + '</div>' +
-      '<div class="trip-meta"><span class="pill place">' + ICON_FLAG + 'In programma</span><span class="pill">Destinazione da decidere</span><span class="pill">In progress</span></div>' +
-      '<p style="margin:18px 0 0; font-size:0.9rem; color:var(--ink-soft);">Appena decisa la meta compariranno qui percorso, dislivello e previsioni meteo.</p>';
+      '<div class="trip-date" style="margin-bottom:14px;">' + nextWhen(n) + '</div>' +
+      '<div class="trip-meta">' + (detailed
+        ? '<span class="pill place">' + ICON_FLAG + 'In programma</span>' + buildNextPills(n)
+        : '<span class="pill place">' + ICON_FLAG + 'In programma</span><span class="pill">Destinazione da decidere</span><span class="pill">In progress</span>') + '</div>' +
+      (n.description ? '<p style="margin:16px 0 0; font-size:0.92rem; color:var(--ink-soft);">' + n.description + '</p>' : '') +
+      (n.note ? '<p style="margin:8px 0 0; font-size:0.85rem; color:var(--amber); font-weight:600;">' + n.note + '</p>' : '') +
+      (!detailed ? '<p style="margin:18px 0 0; font-size:0.9rem; color:var(--ink-soft);">Appena decisa la meta compariranno qui percorso, dislivello e previsioni meteo.</p>' : '');
     detail.classList.add("open");
   }
 
@@ -1033,7 +1063,7 @@
     if (item.upcoming) {
       var sub = document.createElement("span");
       sub.className = "timeline-point-sub";
-      sub.textContent = "da decidere";
+      sub.textContent = t.startPoint ? "in programma" : "da decidere";
       wrap.appendChild(sub);
     }
     track.appendChild(wrap);
