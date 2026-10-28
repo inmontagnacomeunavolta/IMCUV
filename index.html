@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>In Montagna Come una Volta — gruppo di escursionisti tra amici in Lombardia</title>
-<meta name="description" content="Il diario di un gruppo di amici che va in montagna insieme: gite sulle Orobie e in Lombardia, percorsi, foto, statistiche e come unirsi al gruppo.">
+<meta name="description" content="Il diario di un gruppo di amici di Masate e Basiano, in provincia di Milano, che va in montagna insieme: gite sulle Orobie e in Lombardia, percorsi, foto e statistiche.">
 <link rel="canonical" href="https://www.inmontagnacomeunavolta.it/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
@@ -379,13 +379,9 @@
   table.people-table td:first-child, table.people-table th:first-child { padding-left: 0; }
   table.people-table tbody tr:hover { background: var(--paper-2); }
 
-  /* qr code */
-  .qr-box { display: flex; align-items: center; gap: 16px; }
   .join-action { display: flex; align-items: center; justify-content: flex-end; gap: 16px; flex-wrap: wrap; }
   .join-action.stacked { flex-direction: column; align-items: flex-end; gap: 10px; }
   @media (max-width: 520px) { .join-action { justify-content: flex-start; margin-top: 16px; } .join-action.stacked { align-items: flex-start; } }
-  #qr-canvas { border-radius: var(--radius); overflow: hidden; line-height: 0; }
-  #qr-canvas img { display: block; }
 
   footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px)); text-align: center; color: var(--stone); font-size: 0.82rem; }
   .sponsor-credit { margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 0.86rem; color: var(--stone); }
@@ -406,7 +402,7 @@
       <a href="#statistiche">Statistiche</a>
       <a href="#regole">Regole</a>
       <a href="#zaino">Cosa portare</a>
-      <a href="#gruppo">Il gruppo</a>
+      <a href="#gruppo">Contatti</a>
     </div>
   </div>
 </nav>
@@ -441,7 +437,7 @@
   <section id="purpose">
     <div class="wrap">
       <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Il senso</h2></div>
-      <p class="purpose-text">Il gruppo nasce per <strong>stare insieme</strong>, non per fare record: ogni tanto ci si organizza, si sceglie un giro, si va in montagna. L'obiettivo è <strong>coltivare l'amicizia</strong> tra chi ne fa parte e ritrovare, gita dopo gita, la <strong>bellezza della montagna</strong> — un rifugio dove mangiare qualcosa, un lago da guardare, una salita fatta in compagnia invece che da soli.</p>
+      <p class="purpose-text">Siamo un gruppo di amici di <strong>Masate e Basiano</strong>, in provincia di Milano. Il gruppo nasce per <strong>stare insieme</strong>, non per fare record: ogni tanto ci si organizza, si sceglie un giro, si va in montagna. L'obiettivo è <strong>coltivare l'amicizia</strong> tra chi ne fa parte e ritrovare, gita dopo gita, la <strong>bellezza della montagna</strong> — un rifugio dove mangiare qualcosa, un lago da guardare, una salita fatta in compagnia invece che da soli.</p>
       <p class="purpose-founded">Il gruppo è nato il <b>6 agosto 2026</b>.</p>
 
       <div class="purpose-row" style="margin-top: 40px;">
@@ -621,19 +617,8 @@
 
   <section id="gruppo">
     <div class="wrap">
-      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Come aggiungersi</h2></div>
+      <div class="section-head"><span class="section-num">07</span><h2 class="section-title">Contatti</h2></div>
       <div class="join-box">
-        <div class="join-text">
-          <h3>Entra nel gruppo WhatsApp</h3>
-          <p>È lì che si organizzano le gite: data, ritrovo e chi c'è.</p>
-        </div>
-        <div class="qr-box join-action">
-          <div id="qr-canvas"></div>
-          <a class="btn" href="https://chat.whatsapp.com/BC8jcbTeqiWIpMcT0BQZc1" target="_blank" rel="noopener">Unisciti su WhatsApp</a>
-        </div>
-      </div>
-
-      <div class="join-box" style="margin-top: 16px;">
         <div class="join-text">
           <h3>Seguici su Instagram</h3>
           <p>Foto e video delle gite, in anteprima — @inmontagnacomeunavolta</p>
@@ -646,7 +631,7 @@
       <div class="join-box" style="margin-top: 16px;">
         <div class="join-text">
           <h3>Scrivici</h3>
-          <p>Per tutto il resto — <span id="email-text">inmontagnacomeunavolta@gmail.com</span></p>
+          <p>Per scriverci — <span id="email-text">inmontagnacomeunavolta@gmail.com</span></p>
         </div>
         <div class="join-action stacked">
           <a class="btn" href="mailto:inmontagnacomeunavolta@gmail.com">Invia una mail</a>
@@ -673,7 +658,6 @@
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
   var CURRENT_YEAR = 2026;
 
@@ -1101,17 +1085,6 @@
     pin.innerHTML = '<span class="tag">' + t.shortDate + '</span><span class="dot"></span>';
     mapPins.appendChild(pin);
   });
-
-  // ---- QR code for the WhatsApp group ----
-  if (window.QRCode) {
-    new QRCode(document.getElementById("qr-canvas"), {
-      text: "https://chat.whatsapp.com/BC8jcbTeqiWIpMcT0BQZc1",
-      width: 84,
-      height: 84,
-      colorDark: "#2A3128",
-      colorLight: "#00000000"
-    });
-  }
 </script>
 
 </body>
